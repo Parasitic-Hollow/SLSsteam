@@ -5,6 +5,9 @@ SLSPATH="$SLSDIR/path"
 SLSLIB="$SLSDIR/SLSsteam.so"
 SLSAUDIT="LD_AUDIT=\"$SLSDIR/library-inject.so:$SLSDIR/SLSsteam.so\""
 
+FLATPAK_STEAM_DIR="$HOME/.var/app/com.valvesoftware.Steam"
+FLATPAK_APP_ID="com.valvesoftware.Steam"
+
 uninstall()
 {
 	test -f "$SLSDIR/steam-jupiter.bak" && sudo cp -v "$SLSDIR/steam-jupiter.bak" "$(realpath "$(type -P steam-jupiter)")" #Left over from Steam Deck patcher
@@ -13,6 +16,20 @@ uninstall()
 	rm -v "$HOME/.local/share/applications/steam-native.desktop" 2> /dev/null
 	rm -rvf "$SLSDIR"
 	echo "Uninstall done!"
+}
+
+uninstall_flatpak()
+{
+	if ! type -P flatpak > /dev/null; then
+		echo "Flatpak not found! Skipping flatpak uninstall"
+		return 1
+	fi
+
+	flatpak override --user --unset-env=DEBUGGER --unset-env=DEBUGGER_ARGS "$FLATPAK_APP_ID" 2> /dev/null
+	rm -v "$FLATPAK_STEAM_DIR/SLSsteam.so" 2> /dev/null
+	rm -v "$FLATPAK_STEAM_DIR/sls_launch.sh" 2> /dev/null
+
+	echo "Flatpak uninstall done!"
 }
 
 install_wrapper()
@@ -116,6 +133,45 @@ install_slssteam()
 	cp -v ./bin/* "$SLSDIR/"
 }
 
+install_flatpak()
+{
+	LIB="./bin/SLSsteam.so"
+	if [ ! -f "$LIB" ]; then
+		echo "bin/SLSsteam.so not found! Did you run the install.sh in the correct directory?"
+		return 1
+	fi
+
+	if ! type -P flatpak > /dev/null; then
+		echo "Flatpak not found! Do you have flatpak installed?"
+		return 1
+	fi
+
+	if ! flatpak info "$FLATPAK_APP_ID" > /dev/null 2>&1; then
+		echo "Flatpak Steam not installed! Do you have Steam Flatpak installed?"
+		return 1
+	fi
+
+	if [ ! -d "$FLATPAK_STEAM_DIR" ]; then
+		mkdir -p "$FLATPAK_STEAM_DIR"
+		if [[ $? -ne 0 ]]; then
+			echo "Unable to create $FLATPAK_STEAM_DIR! Aborting flatpak install"
+			return 1
+		fi
+	fi
+
+	cp -v "$LIB" "$FLATPAK_STEAM_DIR/"
+
+	cat > "$FLATPAK_STEAM_DIR/sls_launch.sh" <<'EOF'
+DIR=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
+export DEBUGGER="$STEAM_DEBUGGER"
+env -u DEBUGGER -u STEAM_DEBUGGER -u DEBUGGER_ARGS LD_AUDIT="${LD_AUDIT:+$LD_AUDIT:}$DIR/SLSsteam.so" "$@"
+EOF
+
+	flatpak override --user --env=DEBUGGER="." --env=DEBUGGER_ARGS="$FLATPAK_STEAM_DIR/sls_launch.sh" "$FLATPAK_APP_ID"
+
+	echo "Flatpak install done!"
+}
+
 install_all()
 {
 	install_slssteam
@@ -136,7 +192,7 @@ install_all()
 }
 
 if [[ $# -lt 1 ]]; then
-	echo "Usage: $0 install|uninstall"
+	echo "Usage: $0 install|uninstall|flatpak-install|flatpak-uninstall"
 	exit 0
 fi
 
@@ -144,6 +200,10 @@ if [ "$1" == "install" ]; then
 	install_all
 elif [ "$1" == "uninstall" ]; then
 	uninstall
+elif [ "$1" == "flatpak-install" ]; then
+	install_flatpak
+elif [ "$1" == "flatpak-uninstall" ]; then
+	uninstall_flatpak
 else
 	echo "Unknown command $1!"
 	exit 1
