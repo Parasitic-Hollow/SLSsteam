@@ -7,7 +7,7 @@ SLSAUDIT="LD_AUDIT=\"$SLSDIR/library-inject.so:$SLSDIR/SLSsteam.so\""
 
 FLATPAK_APP_ID="com.valvesoftware.Steam"
 FLATPAK_SLSDIR="$HOME/.var/app/$FLATPAK_APP_ID/.local/share/SLSsteam"
-FLATPAK_SLSLIB="$FLATPAK_SLSDIR/SLSsteam.so"
+FLATPAK_LD_AUDIT="/app/links/\$LIB/libshared-library-guard.so:$FLATPAK_SLSDIR/library-inject.so:$FLATPAK_SLSDIR/SLSsteam.so"
 
 uninstall()
 {
@@ -135,8 +135,7 @@ install_slssteam()
 
 install_flatpak()
 {
-	LIB="./bin/SLSsteam.so"
-	if [ ! -f "$LIB" ]; then
+	if [ ! -f "./bin/SLSsteam.so" ]; then
 		echo "bin/SLSsteam.so not found! Did you run the install.sh in the correct directory?"
 		return 1
 	fi
@@ -159,9 +158,9 @@ install_flatpak()
 		fi
 	fi
 
-	cp -v "$LIB" "$FLATPAK_SLSDIR/"
+	cp -v ./bin/* "$FLATPAK_SLSDIR/"
 
-	flatpak override --user --env=LD_AUDIT="/app/links/\$LIB/libshared-library-guard.so:$FLATPAK_SLSLIB" --env=SHARED_LIBRARY_GUARD=0 "$FLATPAK_APP_ID"
+	flatpak override --user --env=LD_AUDIT="$FLATPAK_LD_AUDIT" --env=SHARED_LIBRARY_GUARD=0 "$FLATPAK_APP_ID"
 
 	echo "Flatpak install done!"
 }
