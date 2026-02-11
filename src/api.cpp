@@ -49,6 +49,7 @@ void SLSAPI::onFileChange()
 			if (!g_pClientAppManager)
 			{
 				g_pLog->info("API g_pClientAppManager is nullptr! Aborting...\n");
+				return;
 			}
 
 			g_pLog->info("API Installing %s to %s\n", split[1].c_str(), split[2].c_str());
