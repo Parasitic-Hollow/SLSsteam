@@ -174,6 +174,11 @@ void Apps::sendGamesPlayed(CMsgClientGamesPlayed* msg)
 		game->set_game_id(statusApp.appId);
 		game->set_game_extra_info(statusApp.title);
 		game->set_game_flags(0);
+
+		if (g_config.disableFamilyLock.get())
+		{
+			game->set_owner_id(1);
+		}
 		//game->set_game_flags(EGAMEFLAG_MULTIPLAYER);
 	}
 }
