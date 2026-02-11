@@ -155,7 +155,7 @@ void Apps::sendGamesPlayed(CMsgClientGamesPlayed* msg)
 			game->set_owner_id(1);
 		}
 
-		g_pLog->debug("Playing game %llu with flags %u\n", game->game_id(), game->game_flags());
+		g_pLog->debug("Playing game %llu with flags %u & pid %u\n", game->game_id(), game->game_flags(), game->process_id());
 	}
 
 	if (owned)
