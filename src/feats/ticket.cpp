@@ -255,11 +255,11 @@ void Ticket::recvMsg(CProtoBufMsgBase* msg)
 	switch(msg->type)
 	{
 		case EMSG_APPOWNERSHIPTICKET_RESPONSE:
-			recvAppTicket(reinterpret_cast<CMsgClientGetAppOwnershipTicketResponse*>(msg->body));
+			recvAppTicket(msg->getBody<CMsgClientGetAppOwnershipTicketResponse>());
 			break;
 
 		case EMSG_ENCRYPTED_APPTICKET_RESPONSE:
-			recvEncryptedAppTicket(reinterpret_cast<CMsgClientRequestEncryptedAppTicketResponse*>(msg->body));
+			recvEncryptedAppTicket(msg->getBody<CMsgClientRequestEncryptedAppTicketResponse>());
 			break;
 	}
 }

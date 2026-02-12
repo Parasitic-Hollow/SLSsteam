@@ -13,7 +13,7 @@ void Achievements::recvMessage(const CProtoBufMsgBase* msg)
 		return;
 	}
 
-	const auto body = reinterpret_cast<CMsgClientGetUserStatsResponse*>(msg->body);
+	const auto body = msg->getBody<CMsgClientGetUserStatsResponse>();
 
 	if (body->eresult() == ERESULT_OK)
 	{

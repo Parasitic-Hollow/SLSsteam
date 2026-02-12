@@ -204,13 +204,13 @@ void Apps::sendMsg(CProtoBufMsgBase *msg)
 	switch(msg->type)
 	{
 		case EMSG_PICS_PRODUCTINFO_REQUEST:
-			sendPICSInfoRequest(reinterpret_cast<CMsgClientPICSProductInfoRequest*>(msg->body));
+			sendPICSInfoRequest(msg->getBody<CMsgClientPICSProductInfoRequest>());
 			break;
 
 		case EMSG_GAMESPLAYED:
 		case EMSG_GAMESPLAYED_NO_DATABLOB:
 		case EMSG_GAMESPLAYED_WITH_DATABLOB:
-			sendGamesPlayed(reinterpret_cast<CMsgClientGamesPlayed*>(msg->body));
+			sendGamesPlayed(msg->getBody<CMsgClientGamesPlayed>());
 			break;
 	}
 }

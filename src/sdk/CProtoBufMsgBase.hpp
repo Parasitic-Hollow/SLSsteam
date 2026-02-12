@@ -31,13 +31,18 @@ enum EGameFlags
 class CProtoBufMsgBase
 {
 public:
-	char __pad_0x0[0x14];	//0x0
-	uint16_t type;			//0x14
-	char __pad_0x18[0xA];	//0x16
-	void* body;				//0x20
-	char __pad_0x24[0x8];	//0x24
+	char __pad_0x0[0x14];		//0x0
+	uint16_t type;				//0x14
+	char __pad_0x16[0x6];		//0x16
+	CMsgProtoBufHeader* header; //0x1C
+	void* __pBody;				//0x20
+	char __pad_0x24[0x8];		//0x24
 	
 	uint32_t send();
+	template<typename T> constexpr T* getBody() const
+	{
+		return reinterpret_cast<T*>(__pBody);
+	}
 }; //0x2C
 
 

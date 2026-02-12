@@ -140,7 +140,7 @@ void FakeAppIds::sendMsg(CProtoBufMsgBase* msg)
 			return;
 	}
 
-	const auto body = reinterpret_cast<CMsgClientGamesPlayed*>(msg->body);
+	const auto body = msg->getBody<CMsgClientGamesPlayed>();
 	for(int i = 0; i < body->games_played_size(); i++)
 	{
 		const auto game = body->mutable_games_played(i);
