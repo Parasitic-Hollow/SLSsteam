@@ -135,28 +135,36 @@ bool Apps::shouldDisableUpdates(uint32_t appId)
 
 void Apps::sendGamesPlayed(CMsgClientGamesPlayed* msg)
 {
+	auto titles = g_config.gameTitles.get();
 	bool owned = false;
 
 	for(int i = 0; i < msg->games_played_size(); i++)
 	{
-		auto game = msg->mutable_games_played(i);
+		auto game = CMsgClientGamesPlayed_GamePlayed(msg->games_played(i));
 
-		if (!game->game_id())
+		if (!game.game_id())
 		{
 			continue;
 		}
 
-		if(!owned && g_pSteamEngine->getUser(0)->checkAppOwnership(game->game_id()))
+		if(!owned && g_pSteamEngine->getUser(0)->checkAppOwnership(game.game_id()))
 		{
 			owned = true;
 		}
 
 		if (g_config.disableFamilyLock.get())
 		{
-			game->set_owner_id(1);
+			game.set_owner_id(1);
 		}
 
-		g_pLog->debug("Playing game %llu with flags %u & pid %u\n", game->game_id(), game->game_flags(), game->process_id());
+		if (titles.contains(game.game_id()))
+		{
+			game.set_game_extra_info(titles[game.game_id()]);
+		}
+
+		msg->mutable_games_played(i)->ParseFromString(game.SerializeAsString());
+
+		g_pLog->debug("Playing game %llu with flags %u & pid %u\n", game.game_id(), game.game_flags(), game.process_id());
 	}
 
 	if (owned)
