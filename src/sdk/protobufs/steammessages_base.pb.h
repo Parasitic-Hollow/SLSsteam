@@ -6641,7 +6641,6 @@ class UserSystemInformation PROTOBUF_FINAL :
     kCpuVendorFieldNumber = 9,
     kCpuNameFieldNumber = 10,
     kDxDriverVersionFieldNumber = 12,
-    kDxDriverNameFieldNumber = 13,
     kAdapterDescriptionFieldNumber = 14,
     kDriverVersionFieldNumber = 15,
     kDriverDateFieldNumber = 16,
@@ -6790,26 +6789,6 @@ class UserSystemInformation PROTOBUF_FINAL :
   const std::string& _internal_dx_driver_version() const;
   void _internal_set_dx_driver_version(const std::string& value);
   std::string* _internal_mutable_dx_driver_version();
-  public:
-
-  // optional string dx_driver_name = 13;
-  bool has_dx_driver_name() const;
-  private:
-  bool _internal_has_dx_driver_name() const;
-  public:
-  void clear_dx_driver_name();
-  const std::string& dx_driver_name() const;
-  void set_dx_driver_name(const std::string& value);
-  void set_dx_driver_name(std::string&& value);
-  void set_dx_driver_name(const char* value);
-  void set_dx_driver_name(const char* value, size_t size);
-  std::string* mutable_dx_driver_name();
-  std::string* release_dx_driver_name();
-  void set_allocated_dx_driver_name(std::string* dx_driver_name);
-  private:
-  const std::string& _internal_dx_driver_name() const;
-  void _internal_set_dx_driver_name(const std::string& value);
-  std::string* _internal_mutable_dx_driver_name();
   public:
 
   // optional string adapter_description = 14;
@@ -6966,7 +6945,6 @@ class UserSystemInformation PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr cpu_vendor_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr cpu_name_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr dx_driver_version_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr dx_driver_name_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr adapter_description_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr driver_version_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr driver_date_;
@@ -15457,7 +15435,7 @@ inline void UserSystemInformation::set_allocated_dx_video_card(std::string* dx_v
 
 // optional int32 dx_vendorid = 4;
 inline bool UserSystemInformation::_internal_has_dx_vendorid() const {
-  bool value = (_has_bits_[0] & 0x00000800u) != 0;
+  bool value = (_has_bits_[0] & 0x00000400u) != 0;
   return value;
 }
 inline bool UserSystemInformation::has_dx_vendorid() const {
@@ -15465,7 +15443,7 @@ inline bool UserSystemInformation::has_dx_vendorid() const {
 }
 inline void UserSystemInformation::clear_dx_vendorid() {
   dx_vendorid_ = 0;
-  _has_bits_[0] &= ~0x00000800u;
+  _has_bits_[0] &= ~0x00000400u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 UserSystemInformation::_internal_dx_vendorid() const {
   return dx_vendorid_;
@@ -15475,7 +15453,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 UserSystemInformation::dx_vendorid() const
   return _internal_dx_vendorid();
 }
 inline void UserSystemInformation::_internal_set_dx_vendorid(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000800u;
+  _has_bits_[0] |= 0x00000400u;
   dx_vendorid_ = value;
 }
 inline void UserSystemInformation::set_dx_vendorid(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -15485,7 +15463,7 @@ inline void UserSystemInformation::set_dx_vendorid(::PROTOBUF_NAMESPACE_ID::int3
 
 // optional int32 dx_deviceid = 5;
 inline bool UserSystemInformation::_internal_has_dx_deviceid() const {
-  bool value = (_has_bits_[0] & 0x00001000u) != 0;
+  bool value = (_has_bits_[0] & 0x00000800u) != 0;
   return value;
 }
 inline bool UserSystemInformation::has_dx_deviceid() const {
@@ -15493,7 +15471,7 @@ inline bool UserSystemInformation::has_dx_deviceid() const {
 }
 inline void UserSystemInformation::clear_dx_deviceid() {
   dx_deviceid_ = 0;
-  _has_bits_[0] &= ~0x00001000u;
+  _has_bits_[0] &= ~0x00000800u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 UserSystemInformation::_internal_dx_deviceid() const {
   return dx_deviceid_;
@@ -15503,7 +15481,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 UserSystemInformation::dx_deviceid() const
   return _internal_dx_deviceid();
 }
 inline void UserSystemInformation::_internal_set_dx_deviceid(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00001000u;
+  _has_bits_[0] |= 0x00000800u;
   dx_deviceid_ = value;
 }
 inline void UserSystemInformation::set_dx_deviceid(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -15513,7 +15491,7 @@ inline void UserSystemInformation::set_dx_deviceid(::PROTOBUF_NAMESPACE_ID::int3
 
 // optional uint32 num_gpu = 6;
 inline bool UserSystemInformation::_internal_has_num_gpu() const {
-  bool value = (_has_bits_[0] & 0x00004000u) != 0;
+  bool value = (_has_bits_[0] & 0x00002000u) != 0;
   return value;
 }
 inline bool UserSystemInformation::has_num_gpu() const {
@@ -15521,7 +15499,7 @@ inline bool UserSystemInformation::has_num_gpu() const {
 }
 inline void UserSystemInformation::clear_num_gpu() {
   num_gpu_ = 0u;
-  _has_bits_[0] &= ~0x00004000u;
+  _has_bits_[0] &= ~0x00002000u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint32 UserSystemInformation::_internal_num_gpu() const {
   return num_gpu_;
@@ -15531,7 +15509,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint32 UserSystemInformation::num_gpu() const {
   return _internal_num_gpu();
 }
 inline void UserSystemInformation::_internal_set_num_gpu(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _has_bits_[0] |= 0x00004000u;
+  _has_bits_[0] |= 0x00002000u;
   num_gpu_ = value;
 }
 inline void UserSystemInformation::set_num_gpu(::PROTOBUF_NAMESPACE_ID::uint32 value) {
@@ -15541,7 +15519,7 @@ inline void UserSystemInformation::set_num_gpu(::PROTOBUF_NAMESPACE_ID::uint32 v
 
 // optional uint64 system_ram = 7;
 inline bool UserSystemInformation::_internal_has_system_ram() const {
-  bool value = (_has_bits_[0] & 0x00002000u) != 0;
+  bool value = (_has_bits_[0] & 0x00001000u) != 0;
   return value;
 }
 inline bool UserSystemInformation::has_system_ram() const {
@@ -15549,7 +15527,7 @@ inline bool UserSystemInformation::has_system_ram() const {
 }
 inline void UserSystemInformation::clear_system_ram() {
   system_ram_ = PROTOBUF_ULONGLONG(0);
-  _has_bits_[0] &= ~0x00002000u;
+  _has_bits_[0] &= ~0x00001000u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint64 UserSystemInformation::_internal_system_ram() const {
   return system_ram_;
@@ -15559,7 +15537,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint64 UserSystemInformation::system_ram() const
   return _internal_system_ram();
 }
 inline void UserSystemInformation::_internal_set_system_ram(::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  _has_bits_[0] |= 0x00002000u;
+  _has_bits_[0] |= 0x00001000u;
   system_ram_ = value;
 }
 inline void UserSystemInformation::set_system_ram(::PROTOBUF_NAMESPACE_ID::uint64 value) {
@@ -15788,7 +15766,7 @@ inline void UserSystemInformation::set_allocated_cpu_name(std::string* cpu_name)
 
 // optional uint32 gaming_device_type = 11;
 inline bool UserSystemInformation::_internal_has_gaming_device_type() const {
-  bool value = (_has_bits_[0] & 0x00008000u) != 0;
+  bool value = (_has_bits_[0] & 0x00004000u) != 0;
   return value;
 }
 inline bool UserSystemInformation::has_gaming_device_type() const {
@@ -15796,7 +15774,7 @@ inline bool UserSystemInformation::has_gaming_device_type() const {
 }
 inline void UserSystemInformation::clear_gaming_device_type() {
   gaming_device_type_ = 0u;
-  _has_bits_[0] &= ~0x00008000u;
+  _has_bits_[0] &= ~0x00004000u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint32 UserSystemInformation::_internal_gaming_device_type() const {
   return gaming_device_type_;
@@ -15806,7 +15784,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint32 UserSystemInformation::gaming_device_type
   return _internal_gaming_device_type();
 }
 inline void UserSystemInformation::_internal_set_gaming_device_type(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _has_bits_[0] |= 0x00008000u;
+  _has_bits_[0] |= 0x00004000u;
   gaming_device_type_ = value;
 }
 inline void UserSystemInformation::set_gaming_device_type(::PROTOBUF_NAMESPACE_ID::uint32 value) {
@@ -15887,82 +15865,9 @@ inline void UserSystemInformation::set_allocated_dx_driver_version(std::string* 
   // @@protoc_insertion_point(field_set_allocated:UserSystemInformation.dx_driver_version)
 }
 
-// optional string dx_driver_name = 13;
-inline bool UserSystemInformation::_internal_has_dx_driver_name() const {
-  bool value = (_has_bits_[0] & 0x00000080u) != 0;
-  return value;
-}
-inline bool UserSystemInformation::has_dx_driver_name() const {
-  return _internal_has_dx_driver_name();
-}
-inline void UserSystemInformation::clear_dx_driver_name() {
-  dx_driver_name_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000080u;
-}
-inline const std::string& UserSystemInformation::dx_driver_name() const {
-  // @@protoc_insertion_point(field_get:UserSystemInformation.dx_driver_name)
-  return _internal_dx_driver_name();
-}
-inline void UserSystemInformation::set_dx_driver_name(const std::string& value) {
-  _internal_set_dx_driver_name(value);
-  // @@protoc_insertion_point(field_set:UserSystemInformation.dx_driver_name)
-}
-inline std::string* UserSystemInformation::mutable_dx_driver_name() {
-  // @@protoc_insertion_point(field_mutable:UserSystemInformation.dx_driver_name)
-  return _internal_mutable_dx_driver_name();
-}
-inline const std::string& UserSystemInformation::_internal_dx_driver_name() const {
-  return dx_driver_name_.Get();
-}
-inline void UserSystemInformation::_internal_set_dx_driver_name(const std::string& value) {
-  _has_bits_[0] |= 0x00000080u;
-  dx_driver_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
-}
-inline void UserSystemInformation::set_dx_driver_name(std::string&& value) {
-  _has_bits_[0] |= 0x00000080u;
-  dx_driver_name_.Set(
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
-  // @@protoc_insertion_point(field_set_rvalue:UserSystemInformation.dx_driver_name)
-}
-inline void UserSystemInformation::set_dx_driver_name(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  _has_bits_[0] |= 0x00000080u;
-  dx_driver_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
-  // @@protoc_insertion_point(field_set_char:UserSystemInformation.dx_driver_name)
-}
-inline void UserSystemInformation::set_dx_driver_name(const char* value,
-    size_t size) {
-  _has_bits_[0] |= 0x00000080u;
-  dx_driver_name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
-      reinterpret_cast<const char*>(value), size), GetArena());
-  // @@protoc_insertion_point(field_set_pointer:UserSystemInformation.dx_driver_name)
-}
-inline std::string* UserSystemInformation::_internal_mutable_dx_driver_name() {
-  _has_bits_[0] |= 0x00000080u;
-  return dx_driver_name_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
-}
-inline std::string* UserSystemInformation::release_dx_driver_name() {
-  // @@protoc_insertion_point(field_release:UserSystemInformation.dx_driver_name)
-  if (!_internal_has_dx_driver_name()) {
-    return nullptr;
-  }
-  _has_bits_[0] &= ~0x00000080u;
-  return dx_driver_name_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-}
-inline void UserSystemInformation::set_allocated_dx_driver_name(std::string* dx_driver_name) {
-  if (dx_driver_name != nullptr) {
-    _has_bits_[0] |= 0x00000080u;
-  } else {
-    _has_bits_[0] &= ~0x00000080u;
-  }
-  dx_driver_name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), dx_driver_name,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:UserSystemInformation.dx_driver_name)
-}
-
 // optional string adapter_description = 14;
 inline bool UserSystemInformation::_internal_has_adapter_description() const {
-  bool value = (_has_bits_[0] & 0x00000100u) != 0;
+  bool value = (_has_bits_[0] & 0x00000080u) != 0;
   return value;
 }
 inline bool UserSystemInformation::has_adapter_description() const {
@@ -15970,7 +15875,7 @@ inline bool UserSystemInformation::has_adapter_description() const {
 }
 inline void UserSystemInformation::clear_adapter_description() {
   adapter_description_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000100u;
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline const std::string& UserSystemInformation::adapter_description() const {
   // @@protoc_insertion_point(field_get:UserSystemInformation.adapter_description)
@@ -15988,30 +15893,30 @@ inline const std::string& UserSystemInformation::_internal_adapter_description()
   return adapter_description_.Get();
 }
 inline void UserSystemInformation::_internal_set_adapter_description(const std::string& value) {
-  _has_bits_[0] |= 0x00000100u;
+  _has_bits_[0] |= 0x00000080u;
   adapter_description_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
 }
 inline void UserSystemInformation::set_adapter_description(std::string&& value) {
-  _has_bits_[0] |= 0x00000100u;
+  _has_bits_[0] |= 0x00000080u;
   adapter_description_.Set(
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
   // @@protoc_insertion_point(field_set_rvalue:UserSystemInformation.adapter_description)
 }
 inline void UserSystemInformation::set_adapter_description(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  _has_bits_[0] |= 0x00000100u;
+  _has_bits_[0] |= 0x00000080u;
   adapter_description_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
   // @@protoc_insertion_point(field_set_char:UserSystemInformation.adapter_description)
 }
 inline void UserSystemInformation::set_adapter_description(const char* value,
     size_t size) {
-  _has_bits_[0] |= 0x00000100u;
+  _has_bits_[0] |= 0x00000080u;
   adapter_description_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
       reinterpret_cast<const char*>(value), size), GetArena());
   // @@protoc_insertion_point(field_set_pointer:UserSystemInformation.adapter_description)
 }
 inline std::string* UserSystemInformation::_internal_mutable_adapter_description() {
-  _has_bits_[0] |= 0x00000100u;
+  _has_bits_[0] |= 0x00000080u;
   return adapter_description_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
 }
 inline std::string* UserSystemInformation::release_adapter_description() {
@@ -16019,14 +15924,14 @@ inline std::string* UserSystemInformation::release_adapter_description() {
   if (!_internal_has_adapter_description()) {
     return nullptr;
   }
-  _has_bits_[0] &= ~0x00000100u;
+  _has_bits_[0] &= ~0x00000080u;
   return adapter_description_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 inline void UserSystemInformation::set_allocated_adapter_description(std::string* adapter_description) {
   if (adapter_description != nullptr) {
-    _has_bits_[0] |= 0x00000100u;
+    _has_bits_[0] |= 0x00000080u;
   } else {
-    _has_bits_[0] &= ~0x00000100u;
+    _has_bits_[0] &= ~0x00000080u;
   }
   adapter_description_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), adapter_description,
       GetArena());
@@ -16035,7 +15940,7 @@ inline void UserSystemInformation::set_allocated_adapter_description(std::string
 
 // optional string driver_version = 15;
 inline bool UserSystemInformation::_internal_has_driver_version() const {
-  bool value = (_has_bits_[0] & 0x00000200u) != 0;
+  bool value = (_has_bits_[0] & 0x00000100u) != 0;
   return value;
 }
 inline bool UserSystemInformation::has_driver_version() const {
@@ -16043,7 +15948,7 @@ inline bool UserSystemInformation::has_driver_version() const {
 }
 inline void UserSystemInformation::clear_driver_version() {
   driver_version_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000200u;
+  _has_bits_[0] &= ~0x00000100u;
 }
 inline const std::string& UserSystemInformation::driver_version() const {
   // @@protoc_insertion_point(field_get:UserSystemInformation.driver_version)
@@ -16061,30 +15966,30 @@ inline const std::string& UserSystemInformation::_internal_driver_version() cons
   return driver_version_.Get();
 }
 inline void UserSystemInformation::_internal_set_driver_version(const std::string& value) {
-  _has_bits_[0] |= 0x00000200u;
+  _has_bits_[0] |= 0x00000100u;
   driver_version_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
 }
 inline void UserSystemInformation::set_driver_version(std::string&& value) {
-  _has_bits_[0] |= 0x00000200u;
+  _has_bits_[0] |= 0x00000100u;
   driver_version_.Set(
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
   // @@protoc_insertion_point(field_set_rvalue:UserSystemInformation.driver_version)
 }
 inline void UserSystemInformation::set_driver_version(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  _has_bits_[0] |= 0x00000200u;
+  _has_bits_[0] |= 0x00000100u;
   driver_version_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
   // @@protoc_insertion_point(field_set_char:UserSystemInformation.driver_version)
 }
 inline void UserSystemInformation::set_driver_version(const char* value,
     size_t size) {
-  _has_bits_[0] |= 0x00000200u;
+  _has_bits_[0] |= 0x00000100u;
   driver_version_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
       reinterpret_cast<const char*>(value), size), GetArena());
   // @@protoc_insertion_point(field_set_pointer:UserSystemInformation.driver_version)
 }
 inline std::string* UserSystemInformation::_internal_mutable_driver_version() {
-  _has_bits_[0] |= 0x00000200u;
+  _has_bits_[0] |= 0x00000100u;
   return driver_version_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
 }
 inline std::string* UserSystemInformation::release_driver_version() {
@@ -16092,14 +15997,14 @@ inline std::string* UserSystemInformation::release_driver_version() {
   if (!_internal_has_driver_version()) {
     return nullptr;
   }
-  _has_bits_[0] &= ~0x00000200u;
+  _has_bits_[0] &= ~0x00000100u;
   return driver_version_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 inline void UserSystemInformation::set_allocated_driver_version(std::string* driver_version) {
   if (driver_version != nullptr) {
-    _has_bits_[0] |= 0x00000200u;
+    _has_bits_[0] |= 0x00000100u;
   } else {
-    _has_bits_[0] &= ~0x00000200u;
+    _has_bits_[0] &= ~0x00000100u;
   }
   driver_version_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), driver_version,
       GetArena());
@@ -16108,7 +16013,7 @@ inline void UserSystemInformation::set_allocated_driver_version(std::string* dri
 
 // optional string driver_date = 16;
 inline bool UserSystemInformation::_internal_has_driver_date() const {
-  bool value = (_has_bits_[0] & 0x00000400u) != 0;
+  bool value = (_has_bits_[0] & 0x00000200u) != 0;
   return value;
 }
 inline bool UserSystemInformation::has_driver_date() const {
@@ -16116,7 +16021,7 @@ inline bool UserSystemInformation::has_driver_date() const {
 }
 inline void UserSystemInformation::clear_driver_date() {
   driver_date_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000400u;
+  _has_bits_[0] &= ~0x00000200u;
 }
 inline const std::string& UserSystemInformation::driver_date() const {
   // @@protoc_insertion_point(field_get:UserSystemInformation.driver_date)
@@ -16134,30 +16039,30 @@ inline const std::string& UserSystemInformation::_internal_driver_date() const {
   return driver_date_.Get();
 }
 inline void UserSystemInformation::_internal_set_driver_date(const std::string& value) {
-  _has_bits_[0] |= 0x00000400u;
+  _has_bits_[0] |= 0x00000200u;
   driver_date_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
 }
 inline void UserSystemInformation::set_driver_date(std::string&& value) {
-  _has_bits_[0] |= 0x00000400u;
+  _has_bits_[0] |= 0x00000200u;
   driver_date_.Set(
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
   // @@protoc_insertion_point(field_set_rvalue:UserSystemInformation.driver_date)
 }
 inline void UserSystemInformation::set_driver_date(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  _has_bits_[0] |= 0x00000400u;
+  _has_bits_[0] |= 0x00000200u;
   driver_date_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
   // @@protoc_insertion_point(field_set_char:UserSystemInformation.driver_date)
 }
 inline void UserSystemInformation::set_driver_date(const char* value,
     size_t size) {
-  _has_bits_[0] |= 0x00000400u;
+  _has_bits_[0] |= 0x00000200u;
   driver_date_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
       reinterpret_cast<const char*>(value), size), GetArena());
   // @@protoc_insertion_point(field_set_pointer:UserSystemInformation.driver_date)
 }
 inline std::string* UserSystemInformation::_internal_mutable_driver_date() {
-  _has_bits_[0] |= 0x00000400u;
+  _has_bits_[0] |= 0x00000200u;
   return driver_date_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
 }
 inline std::string* UserSystemInformation::release_driver_date() {
@@ -16165,14 +16070,14 @@ inline std::string* UserSystemInformation::release_driver_date() {
   if (!_internal_has_driver_date()) {
     return nullptr;
   }
-  _has_bits_[0] &= ~0x00000400u;
+  _has_bits_[0] &= ~0x00000200u;
   return driver_date_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 inline void UserSystemInformation::set_allocated_driver_date(std::string* driver_date) {
   if (driver_date != nullptr) {
-    _has_bits_[0] |= 0x00000400u;
+    _has_bits_[0] |= 0x00000200u;
   } else {
-    _has_bits_[0] &= ~0x00000400u;
+    _has_bits_[0] &= ~0x00000200u;
   }
   driver_date_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), driver_date,
       GetArena());
@@ -16181,7 +16086,7 @@ inline void UserSystemInformation::set_allocated_driver_date(std::string* driver
 
 // optional uint32 vram_size = 17;
 inline bool UserSystemInformation::_internal_has_vram_size() const {
-  bool value = (_has_bits_[0] & 0x00010000u) != 0;
+  bool value = (_has_bits_[0] & 0x00008000u) != 0;
   return value;
 }
 inline bool UserSystemInformation::has_vram_size() const {
@@ -16189,7 +16094,7 @@ inline bool UserSystemInformation::has_vram_size() const {
 }
 inline void UserSystemInformation::clear_vram_size() {
   vram_size_ = 0u;
-  _has_bits_[0] &= ~0x00010000u;
+  _has_bits_[0] &= ~0x00008000u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::uint32 UserSystemInformation::_internal_vram_size() const {
   return vram_size_;
@@ -16199,7 +16104,7 @@ inline ::PROTOBUF_NAMESPACE_ID::uint32 UserSystemInformation::vram_size() const 
   return _internal_vram_size();
 }
 inline void UserSystemInformation::_internal_set_vram_size(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _has_bits_[0] |= 0x00010000u;
+  _has_bits_[0] |= 0x00008000u;
   vram_size_ = value;
 }
 inline void UserSystemInformation::set_vram_size(::PROTOBUF_NAMESPACE_ID::uint32 value) {
