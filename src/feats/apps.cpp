@@ -73,6 +73,9 @@ bool Apps::checkAppOwnership(uint32_t appId, CAppOwnershipInfo* pInfo)
 		return false;
 	}
 
+	pInfo->lowViolence = false;
+	pInfo->regionRestricted = false;
+
 	const bool manualUnlock = g_config.isAddedAppId(appId);
 	if (!manualUnlock && (!g_config.playNotOwnedGames.get() || pInfo->purchased))
 	{
