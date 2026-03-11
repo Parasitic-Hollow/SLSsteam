@@ -16,18 +16,28 @@ std::map<uint32_t, int> Apps::appIdOwnerOverride;
 bool Apps::unlockApp(uint32_t appId, CAppOwnershipInfo* info, uint32_t ownerId)
 {
 	//Changing the purchased field is enough, but just for nicety in the Steamclient UI we change the owner too
-	info->ownerSteamId = ownerId;
+	info->owner = ownerId;
+	info->realOwner = 0;
 	info->familyShared = ownerId != g_currentSteamId;
 
-	info->purchased = true;
-	//Unnessecary but whatever
 	info->permanent = !info->familyShared;
+	info->retailLicense = !info->familyShared;
+	info->licensePermanent = !info->familyShared;
+	info->licenseExpired = false;
+	info->licensePending = false;
+	info->licenseLocked = false;
 
-	//Found in backtrace
-	info->releaseState = 4;
-	info->field10_0x25 = 0;
-	//Seems to do nothing in particular, some dlc have this as 1 so I uncomented this for now. Might be free stuff?
-	//pOwnershipInfo->field27_0x36 = 1;
+	info->releaseState = 4; //Released
+	info->purchased = true;
+
+	info->lowViolence = false;
+	info->regionRestricted = false;
+
+	info->autoGrant = false;
+	info->trialTime = 0;
+	info->fromFreeWeekend = false;
+	info->freeLicense = false;
+	info->siteLicense = false;
 
 	//g_pLog->debug("Unlocked %u for %u\n", appId, ownerId);
 	g_pLog->debug("Unlocked %u\n", appId);
