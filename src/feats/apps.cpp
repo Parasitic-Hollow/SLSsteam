@@ -4,6 +4,7 @@
 #include "../sdk/CProtoBufMsgBase.hpp"
 #include "../sdk/CSteamEngine.hpp"
 #include "../sdk/CUser.hpp"
+#include "../sdk/EReleaseState.hpp"
 #include "../sdk/IClientApps.hpp"
 
 #include "../config.hpp"
@@ -27,7 +28,7 @@ bool Apps::unlockApp(uint32_t appId, CAppOwnershipInfo* info, uint32_t ownerId)
 	info->licensePending = false;
 	info->licenseLocked = false;
 
-	info->releaseState = 4; //Released
+	info->releaseState = ERELEASESTATE_RELEASED;
 	info->purchased = true;
 
 	info->lowViolence = false;
