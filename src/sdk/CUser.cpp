@@ -14,7 +14,7 @@ bool CUser::checkAppOwnership(uint32_t appId, CAppOwnershipInfo* pInfo)
 bool CUser::checkAppOwnership(uint32_t appId)
 {
 	CAppOwnershipInfo info {};
-	return checkAppOwnership(appId, &info) && info.purchased;
+	return checkAppOwnership(appId, &info) && info.playable;
 }
 
 void CUser::postCallback(ECallbackType type, void* pCallback, uint32_t callbackSize)

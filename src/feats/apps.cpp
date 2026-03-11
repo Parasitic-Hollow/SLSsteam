@@ -29,7 +29,7 @@ bool Apps::unlockApp(uint32_t appId, CAppOwnershipInfo* info, uint32_t ownerId)
 	info->licenseLocked = false;
 
 	info->releaseState = ERELEASESTATE_RELEASED;
-	info->purchased = true;
+	info->playable = true;
 
 	info->lowViolence = false;
 	info->regionRestricted = false;
@@ -78,7 +78,7 @@ bool Apps::checkAppOwnership(uint32_t appId, CAppOwnershipInfo* pInfo)
 	pInfo->regionRestricted = false;
 
 	const bool manualUnlock = g_config.isAddedAppId(appId);
-	if (!manualUnlock && (!g_config.playNotOwnedGames.get() || pInfo->purchased))
+	if (!manualUnlock && (!g_config.playNotOwnedGames.get() || pInfo->playable))
 	{
 		return false;
 	}

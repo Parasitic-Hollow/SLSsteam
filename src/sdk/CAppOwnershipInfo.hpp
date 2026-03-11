@@ -12,8 +12,8 @@ struct CAppOwnershipInfo {
     int32_t field6_0x18;
     uint32_t field7_0x1c;
     uint32_t realOwner;
-    bool purchased;
-    char licenseExpired;
+    bool playable;
+    bool licenseExpired;
     bool permanent;
     bool lowViolence;
     bool freeLicense;
@@ -24,13 +24,12 @@ struct CAppOwnershipInfo {
     bool retailLicense;
     bool autoGrant;
     bool licensePermanent;
-    char field21_0x30;
+    bool field21_0x30;
     bool field22_0x31;
     bool siteLicense;
-    char field24_0x33;
+    bool field24_0x33;
     bool field25_0x34;
-    char familyShared;
-    char field27_0x36;
-    char field28_0x37;
-};
-
+    bool familyShared;
+    bool field27_0x36;
+    bool field28_0x37;
+}; //0x38
