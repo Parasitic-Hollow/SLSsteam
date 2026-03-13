@@ -625,27 +625,6 @@ static void hkClientUtils_RunIPCFrame(void* pClientUtils, void* a1, void* a2, vo
 	Hooks::IClientUtils_RunIPCFrame.tramp.fn(pClientUtils, a1, a2, a3);
 }
 
-static bool hkClientUser_BIsSubscribedApp(void* pClientUser, uint32_t appId)
-{
-	const bool ret = Hooks::IClientUser_BIsSubscribedApp.tramp.fn(pClientUser, appId);
-	g_pLog->once
-	(
-		"%s(%p, %u) -> %i\n",
-
-		Hooks::IClientUser_BIsSubscribedApp.name.c_str(),
-		pClientUser,
-		appId,
-		ret
-	);
-
-	if (DLC::isSubscribed(appId))
-	{
-		return true;
-	}
-
-	return ret;
-}
-
 static bool hkClientUser_BLoggedOn(void* pClientUser)
 {
 	const bool ret = Hooks::IClientUser_BLoggedOn.tramp.fn(pClientUser);
@@ -960,7 +939,6 @@ namespace Hooks
 
 	DetourHook<IClientAppManager_BCanRemotePlayTogether_t> IClientAppManager_BCanRemotePlayTogether;
 
-	DetourHook<IClientUser_BIsSubscribedApp_t> IClientUser_BIsSubscribedApp;
 	DetourHook<IClientUser_BLoggedOn_t> IClientUser_BLoggedOn;
 	DetourHook<IClientUser_BUpdateAppOwnershipTicket_t> IClientUser_BUpdateAppOwnershipTicket;
 	DetourHook<IClientUser_GetAppOwnershipTicketExtendedData_t> IClientUser_GetAppOwnershipTicketExtendedData;
@@ -1020,7 +998,6 @@ bool Hooks::setup()
 		&& IClientUser_RunIPCFrame.setup(Patterns::IClientUser::RunIPCFrame, hkClientUser_RunIPCFrame)
 		&& IClientUserStats_RunIPCFrame.setup(Patterns::IClientUserStats::RunIPCFrame, hkClientUserStats_RunIPCFrame)
 
-		&& IClientUser_BIsSubscribedApp.setup(Patterns::IClientUser::BIsSubscribedApp, &hkClientUser_BIsSubscribedApp)
 		&& IClientUser_BLoggedOn.setup(Patterns::IClientUser::BLoggedOn, &hkClientUser_BLoggedOn)
 		&& IClientUser_BUpdateAppOwnershipTicket.setup(Patterns::IClientUser::BUpdateAppOwnershipTicket, hkClientUser_BUpdateOwnershipTicket)
 		&& IClientUser_GetAppOwnershipTicketExtendedData.setup(Patterns::IClientUser::GetAppOwnershipTicketExtendedData, hkClientUser_GetAppOwnershipTicketExtendedData)
@@ -1067,7 +1044,6 @@ void Hooks::place()
 	IClientUser_RunIPCFrame.place();
 	IClientUserStats_RunIPCFrame.place();
 
-	IClientUser_BIsSubscribedApp.place();
 	IClientUser_BLoggedOn.place();
 	IClientUser_BUpdateAppOwnershipTicket.place();
 	IClientUser_GetAppOwnershipTicketExtendedData.place();
@@ -1106,7 +1082,6 @@ void Hooks::remove()
 	IClientUser_RunIPCFrame.remove();
 	IClientUserStats_RunIPCFrame.remove();
 
-	IClientUser_BIsSubscribedApp.remove();
 	IClientUser_BLoggedOn.remove();
 	IClientUser_BUpdateAppOwnershipTicket.remove();
 	IClientUser_GetAppOwnershipTicketExtendedData.remove();

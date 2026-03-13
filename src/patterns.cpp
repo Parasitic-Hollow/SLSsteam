@@ -206,12 +206,6 @@ namespace Patterns
 			std::vector<uint8_t> { 0x56, 0x57, 0xe5, 0x89, 0x55 }
 		};
 
-		Pattern_t BIsSubscribedApp
-		{
-			"IClientUser::BIsSubscribedApp",
-			"E8 ? ? ? ? 8D BB ? ? ? ? 88 44 24",
-			SigFollowMode::Relative
-		};
 		Pattern_t BLoggedOn
 		{
 			"IClientUser::BLoggedOn",

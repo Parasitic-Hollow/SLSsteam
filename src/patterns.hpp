@@ -82,7 +82,6 @@ namespace Patterns
 	{
 		extern Pattern_t RunIPCFrame;
 
-		extern Pattern_t BIsSubscribedApp;
 		extern Pattern_t BLoggedOn;
 		extern Pattern_t BUpdateAppOwnershipTicket;
 		extern Pattern_t GetAppOwnershipTicketExtendedData;
