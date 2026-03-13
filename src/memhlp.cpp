@@ -5,6 +5,7 @@
 
 #include "libmem/libmem.h"
 
+#include <map>
 #include <vector>
 
 std::vector<int16_t> MemHlp::patternToBytes(const char* pattern)
@@ -42,29 +43,54 @@ lm_address_t MemHlp::patternScan(const char* pattern, lm_module_t module)
 
 	//Maybe cache all Segments via LM_EnumSegments and check them for their protection before wantomly reading addresses
 	//Totally unnecessary right now, and might always be
+	
+	static auto codeSections = std::map<lm_address_t, lm_address_t>();
 
-	for (lm_address_t cur = module.base; cur < end; cur++)
+	const static auto lambda = [](lm_segment_t* seg, lm_void_t* arg) -> lm_bool_t
 	{
-		bool found = true;
-		for(unsigned int i = 0; i < bytes.size(); i++)
+		if(seg->prot & LM_PROT_R)
 		{
-			if (bytes.at(i) == -1)
-			{
-				continue;
-			}
-
-			lm_address_t byteAddr = cur + i;
-			const lm_byte_t* pbyte = reinterpret_cast<lm_byte_t*>(byteAddr);
-			if (*pbyte != bytes.at(i))
-			{
-				found = false;
-				break;
-			}
+			codeSections[seg->base] = seg->base + seg->size;
+			g_pLog->debug("Code section at %p to %p\n", seg->base, seg->base + seg->size);
 		}
 
-		if (found)
+		return LM_TRUE;
+	};
+
+	LM_EnumSegments(lambda, nullptr);
+
+	for(const auto& itm : codeSections)
+	{
+		for (lm_address_t cur = itm.first; cur < itm.second; cur++)
 		{
-			return cur;
+			bool found = true;
+
+			for(unsigned int i = 0; i < bytes.size(); i++)
+			{
+				if (bytes.at(i) == -1)
+				{
+					continue;
+				}
+
+				lm_address_t byteAddr = cur + i;
+				if (byteAddr > itm.second)
+				{
+					found = false;
+					break;
+				}
+
+				const lm_byte_t* pbyte = reinterpret_cast<lm_byte_t*>(byteAddr);
+				if (*pbyte != bytes.at(i))
+				{
+					found = false;
+					break;
+				}
+			}
+
+			if (found)
+			{
+				return cur;
+			}
 		}
 	}
 
