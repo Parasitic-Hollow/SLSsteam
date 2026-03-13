@@ -11,10 +11,15 @@ bool CUser::checkAppOwnership(uint32_t appId, CAppOwnershipInfo* pInfo)
 	return Hooks::CUser_CheckAppOwnership.tramp.fn(this, appId, pInfo);
 }
 
-bool CUser::checkAppOwnership(uint32_t appId)
+bool CUser::isSubscribed(uint32_t appId)
 {
 	CAppOwnershipInfo info {};
-	return checkAppOwnership(appId, &info) && info.playable;
+	if (!checkAppOwnership(appId, &info))
+	{
+		return false;
+	}
+
+	return info.playable && !info.licenseExpired;
 }
 
 void CUser::postCallback(ECallbackType type, void* pCallback, uint32_t callbackSize)
