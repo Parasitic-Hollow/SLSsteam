@@ -70,15 +70,15 @@ public:
 
 namespace Hooks
 {
-	typedef void(*LogSteamPipeCall_t)(const char*, const char*);
+	typedef void(*TraceIPC_t)(const char*, const char*);
 
-	typedef void(*IClientAppManager_PipeLoop_t)(void*, void*, void*, void*);
-	typedef void(*IClientApps_PipeLoop_t)(void*, void*, void*, void*);
-	typedef void(*IClientRemoteStorage_PipeLoop_t)(void*, void*, void*, void*);
-	typedef void(*IClientUGC_PipeLoop_t)(void*, void*, void*, void*);
-	typedef void(*IClientUtils_PipeLoop_t)(void*, void*, void*, void*);
-	typedef void(*IClientUser_PipeLoop_t)(void*, void*, void*, void*);
-	typedef void(*IClientUserStats_PipeLoop_t)(void*, void*, void*, void*);
+	typedef void(*IClientAppManager_RunIPCFrame_t)(void*, void*, void*, void*);
+	typedef void(*IClientApps_RunIPCFrame_t)(void*, void*, void*, void*);
+	typedef void(*IClientRemoteStorage_RunIPCFrame_t)(void*, void*, void*, void*);
+	typedef void(*IClientUGC_RunIPCFrame_t)(void*, void*, void*, void*);
+	typedef void(*IClientUtils_RunIPCFrame_t)(void*, void*, void*, void*);
+	typedef void(*IClientUser_RunIPCFrame_t)(void*, void*, void*, void*);
+	typedef void(*IClientUserStats_RunIPCFrame_t)(void*, void*, void*, void*);
 
 	typedef void(*CProtoBufMsgBase_InitFromPacket_t)(CProtoBufMsgBase*, void*);
 	typedef uint32_t(*CProtoBufMsgBase_Send_t)(CProtoBufMsgBase*);
@@ -104,7 +104,7 @@ namespace Hooks
 
 	typedef bool(*IClientUtils_GetOfflineMode_t)(void*);
 
-	extern DetourHook<LogSteamPipeCall_t> LogSteamPipeCall;
+	extern DetourHook<TraceIPC_t> TraceIPC;
 
 	extern DetourHook<CProtoBufMsgBase_InitFromPacket_t> CProtoBufMsgBase_InitFromPacket;
 	extern DetourHook<CProtoBufMsgBase_Send_t> CProtoBufMsgBase_Send;
@@ -112,13 +112,13 @@ namespace Hooks
 	extern DetourHook<CSteamMatchmakingServers_GetServerDetails_t> CSteamMatchmakingServers_GetServerDetails;
 	extern DetourHook<CSteamMatchmakingServers_RequestInternetServerList_t> CSteamMatchmakingServers_RequestInternetServerList;
 
-	extern DetourHook<IClientAppManager_PipeLoop_t> IClientAppManager_PipeLoop;
-	extern DetourHook<IClientApps_PipeLoop_t> IClientApps_PipeLoop;
-	extern DetourHook<IClientRemoteStorage_PipeLoop_t> IClientRemoteStorage_PipeLoop;
-	extern DetourHook<IClientUGC_PipeLoop_t> IClientUGC_PipeLoop;
-	extern DetourHook<IClientUtils_PipeLoop_t> IClientUtils_PipeLoop;
-	extern DetourHook<IClientUser_PipeLoop_t> IClientUser_PipeLoop;
-	extern DetourHook<IClientUserStats_PipeLoop_t> IClientUserStats_PipeLoop;
+	extern DetourHook<IClientAppManager_RunIPCFrame_t> IClientAppManager_RunIPCFrame;
+	extern DetourHook<IClientApps_RunIPCFrame_t> IClientApps_RunIPCFrame;
+	extern DetourHook<IClientRemoteStorage_RunIPCFrame_t> IClientRemoteStorage_RunIPCFrame;
+	extern DetourHook<IClientUGC_RunIPCFrame_t> IClientUGC_RunIPCFrame;
+	extern DetourHook<IClientUtils_RunIPCFrame_t> IClientUtils_RunIPCFrame;
+	extern DetourHook<IClientUser_RunIPCFrame_t> IClientUser_RunIPCFrame;
+	extern DetourHook<IClientUserStats_RunIPCFrame_t> IClientUserStats_RunIPCFrame;
 
 	extern DetourHook<CSteamEngine_Init_t> CSteamEngine_Init;
 	extern DetourHook<CSteamEngine_SetAppIdForCurrentPipe_t> CSteamEngine_SetAppIdForCurrentPipe;

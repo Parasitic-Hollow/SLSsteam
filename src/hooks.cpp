@@ -13,10 +13,8 @@
 #include "sdk/CSteamMatchmakingServers.hpp"
 #include "sdk/CUser.hpp"
 #include "sdk/EResult.hpp"
-#include "sdk/IClientUser.hpp"
 #include "sdk/IClientAppManager.hpp"
 #include "sdk/IClientApps.hpp"
-#include "sdk/IClientUser.hpp"
 #include "sdk/IClientUtils.hpp"
 
 #include "feats/achievements.hpp"
@@ -152,9 +150,9 @@ void VFTHook<T>::setup(std::shared_ptr<lm_vmt_t> vft, unsigned int index, T hook
 }
 
 __attribute__((hot))
-static void hkLogSteamPipeCall(const char* iface, const char* fn)
+static void hkTraceIPC(const char* iface, const char* fn)
 {
-	Hooks::LogSteamPipeCall.tramp.fn(iface, fn);
+	Hooks::TraceIPC.tramp.fn(iface, fn);
 
 	if (g_config.extendedLogging.get())
 	{
@@ -162,7 +160,7 @@ static void hkLogSteamPipeCall(const char* iface, const char* fn)
 		(
 			"%s(%s, %s)\n",
 
-			Hooks::LogSteamPipeCall.name.c_str(),
+			Hooks::TraceIPC.name.c_str(),
 			iface,
 			fn
 		);
@@ -416,7 +414,7 @@ static bool hkClientAppManager_GetUpdateInfo(void* pClientAppManager, uint32_t a
 }
 
 __attribute__((hot))
-static void hkClientAppManager_PipeLoop(void* pClientAppManager, void* a1, void* a2, void* a3)
+static void hkClientAppManager_RunIPCFrame(void* pClientAppManager, void* a1, void* a2, void* a3)
 {
 	g_pClientAppManager = reinterpret_cast<IClientAppManager*>(pClientAppManager);
 
@@ -435,8 +433,8 @@ static void hkClientAppManager_PipeLoop(void* pClientAppManager, void* a1, void*
 
 	g_pLog->debug("IClientAppManager->vft at %p\n", vft->vtable);
 
-	Hooks::IClientAppManager_PipeLoop.remove();
-	Hooks::IClientAppManager_PipeLoop.originalFn.fn(pClientAppManager, a1, a2, a3);
+	Hooks::IClientAppManager_RunIPCFrame.remove();
+	Hooks::IClientAppManager_RunIPCFrame.originalFn.fn(pClientAppManager, a1, a2, a3);
 }
 
 static unsigned int hkClientApps_GetDLCCount(void* pClientApps, uint32_t appId)
@@ -491,7 +489,7 @@ static bool hkClientApps_GetDLCDataByIndex(void* pClientApps, uint32_t appId, in
 }
 
 __attribute__((hot))
-static void hkClientApps_PipeLoop(void* pClientApps, void* a1, void* a2, void* a3)
+static void hkClientApps_RunIPCFrame(void* pClientApps, void* a1, void* a2, void* a3)
 {
 	static bool hooked = false;
 	if (!hooked)
@@ -512,7 +510,7 @@ static void hkClientApps_PipeLoop(void* pClientApps, void* a1, void* a2, void* a
 		hooked = true;
 	}
 
-	Hooks::IClientApps_PipeLoop.tramp.fn(pClientApps, a1, a2, a3);
+	Hooks::IClientApps_RunIPCFrame.tramp.fn(pClientApps, a1, a2, a3);
 }
 
 static bool hkClientRemoteStorage_IsCloudEnabledForApp(void* pClientRemoteStorage, uint32_t appId)
@@ -537,7 +535,7 @@ static bool hkClientRemoteStorage_IsCloudEnabledForApp(void* pClientRemoteStorag
 	return enabled;
 }
 
-static void hkClientRemoteStorage_PipeLoop(void* pClientRemoteStorage, void* a1, void* a2, void* a3)
+static void hkClientRemoteStorage_RunIPCFrame(void* pClientRemoteStorage, void* a1, void* a2, void* a3)
 {
 
 	static bool hooked = false;
@@ -556,15 +554,15 @@ static void hkClientRemoteStorage_PipeLoop(void* pClientRemoteStorage, void* a1,
 	
 	//Cloud & Workshop
 	FakeAppIds::pipeLoop(false);
-	Hooks::IClientRemoteStorage_PipeLoop.tramp.fn(pClientRemoteStorage, a1, a2, a3);
+	Hooks::IClientRemoteStorage_RunIPCFrame.tramp.fn(pClientRemoteStorage, a1, a2, a3);
 	FakeAppIds::pipeLoop(true);
 }
 
-static void hkClientUGC_PipeLoop(void* pClientUGC, void* a1, void* a2, void* a3)
+static void hkClientUGC_RunIPCFrame(void* pClientUGC, void* a1, void* a2, void* a3)
 {
 	//Workshop
 	FakeAppIds::pipeLoop(false);
-	Hooks::IClientUGC_PipeLoop.tramp.fn(pClientUGC, a1, a2, a3);
+	Hooks::IClientUGC_RunIPCFrame.tramp.fn(pClientUGC, a1, a2, a3);
 	FakeAppIds::pipeLoop(true);
 }
 
@@ -603,7 +601,7 @@ static bool hkClientUtils_GetOfflineMode(void* pClientUtils)
 	return ret;
 }
 
-static void hkClientUtils_PipeLoop(void* pClientUtils, void* a1, void* a2, void* a3)
+static void hkClientUtils_RunIPCFrame(void* pClientUtils, void* a1, void* a2, void* a3)
 {
 	static bool hooked = false;
 	if (!hooked)
@@ -624,7 +622,7 @@ static void hkClientUtils_PipeLoop(void* pClientUtils, void* a1, void* a2, void*
 		hooked = true;
 	}
 
-	Hooks::IClientUtils_PipeLoop.tramp.fn(pClientUtils, a1, a2, a3);
+	Hooks::IClientUtils_RunIPCFrame.tramp.fn(pClientUtils, a1, a2, a3);
 }
 
 static bool hkClientUser_BIsSubscribedApp(void* pClientUser, uint32_t appId)
@@ -671,7 +669,7 @@ static bool hkClientUser_BLoggedOn(void* pClientUser)
 static uint32_t hkClientUser_BUpdateOwnershipTicket(void* pClientUser, uint32_t appId, bool staleOnly)
 {
 	const auto cached = Ticket::getCachedTicket(appId);
-	if (g_pSteamEngine->getUser(0)->checkAppOwnership(appId) && !cached.steamId)
+	if (g_pSteamEngine->getUser(0)->isSubscribed(appId) && !cached.steamId)
 	{
 		staleOnly = false;
 		g_pLog->debug("Force re-requesting OwnershipInfo for %u\n", appId);
@@ -785,28 +783,28 @@ static bool hkClientUser_RequiresLegacyCDKey(void* pClientUser, uint32_t appId, 
 	return requiresKey;
 }
 
-static void hkClientUser_PipeLoop(void* pClientUser, void* a1, void* a2, void* a3)
+static void hkClientUser_RunIPCFrame(void* pClientUser, void* a1, void* a2, void* a3)
 {
-	g_pClientUser = reinterpret_cast<IClientUser*>(pClientUser);
+	//g_pClientUser = reinterpret_cast<IClientUser*>(pClientUser);
 
 	//std::shared_ptr<lm_vmt_t> vft = std::make_shared<lm_vmt_t>();
 	//LM_VmtNew(*reinterpret_cast<lm_address_t**>(pClientUser), vft.get());
 
 	//g_pLog->debug("IClientUser->vft at %p\n", vft->vtable);
 
-	//Hooks::IClientUser_PipeLoop.remove();
-	//Hooks::IClientUser_PipeLoop.originalFn.fn(pClientUser, a1, a2, a3);
+	//Hooks::IClientUser_RunIPCFrame.remove();
+	//Hooks::IClientUser_RunIPCFrame.originalFn.fn(pClientUser, a1, a2, a3);
 	
 	//FakeAppIds::pipeLoop(false);
-	Hooks::IClientUser_PipeLoop.tramp.fn(pClientUser, a1, a2, a3);
+	Hooks::IClientUser_RunIPCFrame.tramp.fn(pClientUser, a1, a2, a3);
 	//FakeAppIds::pipeLoop(true);
 }
 
-static void hkClientUserStats_PipeLoop(void* pClientUserStats, void* a1, void* a2, void* a3)
+static void hkClientUserStats_RunIPCFrame(void* pClientUserStats, void* a1, void* a2, void* a3)
 {
 	//Achievements
 	FakeAppIds::pipeLoop(false);
-	Hooks::IClientUserStats_PipeLoop.tramp.fn(pClientUserStats, a1, a2, a3);
+	Hooks::IClientUserStats_RunIPCFrame.tramp.fn(pClientUserStats, a1, a2, a3);
 	FakeAppIds::pipeLoop(true);
 }
 
@@ -938,15 +936,15 @@ static bool createAndPlaceSteamIdHook()
 namespace Hooks
 {
 	//TODO: Lazily intialize in a different way, or preload glibc
-	DetourHook<LogSteamPipeCall_t> LogSteamPipeCall;
+	DetourHook<TraceIPC_t> TraceIPC;
 
-	DetourHook<IClientAppManager_PipeLoop_t> IClientAppManager_PipeLoop;
-	DetourHook<IClientApps_PipeLoop_t> IClientApps_PipeLoop;
-	DetourHook<IClientRemoteStorage_PipeLoop_t> IClientRemoteStorage_PipeLoop;
-	DetourHook<IClientUGC_PipeLoop_t> IClientUGC_PipeLoop;
-	DetourHook<IClientUtils_PipeLoop_t> IClientUtils_PipeLoop;
-	DetourHook<IClientUser_PipeLoop_t> IClientUser_PipeLoop;
-	DetourHook<IClientUserStats_PipeLoop_t> IClientUserStats_PipeLoop;
+	DetourHook<IClientAppManager_RunIPCFrame_t> IClientAppManager_RunIPCFrame;
+	DetourHook<IClientApps_RunIPCFrame_t> IClientApps_RunIPCFrame;
+	DetourHook<IClientRemoteStorage_RunIPCFrame_t> IClientRemoteStorage_RunIPCFrame;
+	DetourHook<IClientUGC_RunIPCFrame_t> IClientUGC_RunIPCFrame;
+	DetourHook<IClientUtils_RunIPCFrame_t> IClientUtils_RunIPCFrame;
+	DetourHook<IClientUser_RunIPCFrame_t> IClientUser_RunIPCFrame;
+	DetourHook<IClientUserStats_RunIPCFrame_t> IClientUserStats_RunIPCFrame;
 
 	DetourHook<CProtoBufMsgBase_InitFromPacket_t> CProtoBufMsgBase_InitFromPacket;
 	DetourHook<CProtoBufMsgBase_Send_t> CProtoBufMsgBase_Send;
@@ -998,7 +996,7 @@ bool Hooks::setup()
 	IClientUser_GetSteamId = Patterns::IClientUser::GetSteamId.address;
 
 	bool succeeded =
-		LogSteamPipeCall.setup(Patterns::LogSteamPipeCall, &hkLogSteamPipeCall)
+		TraceIPC.setup(Patterns::TraceIPC, &hkTraceIPC)
 
 		&& CProtoBufMsgBase_InitFromPacket.setup(Patterns::CProtoBufMsgBase::InitFromPacket, &hkProtoBufMsgBase_InitFromPacket)
 		&& CProtoBufMsgBase_Send.setup(Patterns::CProtoBufMsgBase::Send, &hkProtoBufMsgBase_Send)
@@ -1014,13 +1012,13 @@ bool Hooks::setup()
 
 		&& IClientAppManager_BCanRemotePlayTogether.setup(Patterns::IClientAppManager::BCanRemotePlayTogether, hkClientAppManager_BCanRemotePlayTogether)
 
-		&& IClientApps_PipeLoop.setup(Patterns::IClientApps::PipeLoop, hkClientApps_PipeLoop)
-		&& IClientAppManager_PipeLoop.setup(Patterns::IClientAppManager::PipeLoop, hkClientAppManager_PipeLoop)
-		&& IClientRemoteStorage_PipeLoop.setup(Patterns::IClientRemoteStorage::PipeLoop, hkClientRemoteStorage_PipeLoop)
-		&& IClientUGC_PipeLoop.setup(Patterns::IClientUGC::PipeLoop, hkClientUGC_PipeLoop)
-		&& IClientUtils_PipeLoop.setup(Patterns::IClientUtils::PipeLoop, hkClientUtils_PipeLoop)
-		&& IClientUser_PipeLoop.setup(Patterns::IClientUser::PipeLoop, hkClientUser_PipeLoop)
-		&& IClientUserStats_PipeLoop.setup(Patterns::IClientUserStats::PipeLoop, hkClientUserStats_PipeLoop)
+		&& IClientApps_RunIPCFrame.setup(Patterns::IClientApps::RunIPCFrame, hkClientApps_RunIPCFrame)
+		&& IClientAppManager_RunIPCFrame.setup(Patterns::IClientAppManager::RunIPCFrame, hkClientAppManager_RunIPCFrame)
+		&& IClientRemoteStorage_RunIPCFrame.setup(Patterns::IClientRemoteStorage::RunIPCFrame, hkClientRemoteStorage_RunIPCFrame)
+		&& IClientUGC_RunIPCFrame.setup(Patterns::IClientUGC::RunIPCFrame, hkClientUGC_RunIPCFrame)
+		&& IClientUtils_RunIPCFrame.setup(Patterns::IClientUtils::RunIPCFrame, hkClientUtils_RunIPCFrame)
+		&& IClientUser_RunIPCFrame.setup(Patterns::IClientUser::RunIPCFrame, hkClientUser_RunIPCFrame)
+		&& IClientUserStats_RunIPCFrame.setup(Patterns::IClientUserStats::RunIPCFrame, hkClientUserStats_RunIPCFrame)
 
 		&& IClientUser_BIsSubscribedApp.setup(Patterns::IClientUser::BIsSubscribedApp, &hkClientUser_BIsSubscribedApp)
 		&& IClientUser_BLoggedOn.setup(Patterns::IClientUser::BLoggedOn, &hkClientUser_BLoggedOn)
@@ -1045,7 +1043,7 @@ void Hooks::place()
 	}
 
 	//Detours
-	LogSteamPipeCall.place();
+	TraceIPC.place();
 
 	CProtoBufMsgBase_InitFromPacket.place();
 	CProtoBufMsgBase_Send.place();
@@ -1061,13 +1059,13 @@ void Hooks::place()
 
 	IClientAppManager_BCanRemotePlayTogether.place();
 
-	IClientApps_PipeLoop.place();
-	IClientAppManager_PipeLoop.place();
-	IClientRemoteStorage_PipeLoop.place();
-	IClientUGC_PipeLoop.place();
-	IClientUtils_PipeLoop.place();
-	IClientUser_PipeLoop.place();
-	IClientUserStats_PipeLoop.place();
+	IClientApps_RunIPCFrame.place();
+	IClientAppManager_RunIPCFrame.place();
+	IClientRemoteStorage_RunIPCFrame.place();
+	IClientUGC_RunIPCFrame.place();
+	IClientUtils_RunIPCFrame.place();
+	IClientUser_RunIPCFrame.place();
+	IClientUserStats_RunIPCFrame.place();
 
 	IClientUser_BIsSubscribedApp.place();
 	IClientUser_BLoggedOn.place();
@@ -1084,7 +1082,7 @@ void Hooks::place()
 void Hooks::remove()
 {
 	//Detours
-	LogSteamPipeCall.remove();
+	TraceIPC.remove();
 
 	CProtoBufMsgBase_InitFromPacket.remove();
 	CProtoBufMsgBase_Send.remove();
@@ -1100,13 +1098,13 @@ void Hooks::remove()
 
 	IClientAppManager_BCanRemotePlayTogether.remove();
 
-	IClientApps_PipeLoop.remove();
-	IClientAppManager_PipeLoop.remove();
-	IClientRemoteStorage_PipeLoop.remove();
-	IClientUGC_PipeLoop.remove();
-	IClientUtils_PipeLoop.remove();
-	IClientUser_PipeLoop.remove();
-	IClientUserStats_PipeLoop.remove();
+	IClientApps_RunIPCFrame.remove();
+	IClientAppManager_RunIPCFrame.remove();
+	IClientRemoteStorage_RunIPCFrame.remove();
+	IClientUGC_RunIPCFrame.remove();
+	IClientUtils_RunIPCFrame.remove();
+	IClientUser_RunIPCFrame.remove();
+	IClientUserStats_RunIPCFrame.remove();
 
 	IClientUser_BIsSubscribedApp.remove();
 	IClientUser_BLoggedOn.remove();

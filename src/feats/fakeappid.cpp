@@ -20,7 +20,7 @@ uint32_t FakeAppIds::getFakeAppId(uint32_t appId)
 	{
 		return fakeAppIds[appId];
 	}
-	else if (fakeAppIds.contains(0) && !g_pSteamEngine->getUser(0)->checkAppOwnership(appId))
+	else if (fakeAppIds.contains(0) && !g_pSteamEngine->getUser(0)->isSubscribed(appId))
 	{
 		return fakeAppIds[0];
 	}

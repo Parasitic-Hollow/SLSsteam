@@ -31,7 +31,7 @@ namespace Patterns
 	extern Pattern_t FamilyGroupRunningApp;
 	extern Pattern_t StopPlayingBorrowedApp;
 
-	extern Pattern_t LogSteamPipeCall;
+	extern Pattern_t TraceIPC;
 
 	namespace CProtoBufMsgBase
 	{
@@ -64,23 +64,23 @@ namespace Patterns
 
 	namespace IClientAppManager
 	{
-		extern Pattern_t PipeLoop;
+		extern Pattern_t RunIPCFrame;
 		extern Pattern_t BCanRemotePlayTogether;
 	}
 
 	namespace IClientApps
 	{
-		extern Pattern_t PipeLoop;
+		extern Pattern_t RunIPCFrame;
 	}
 
 	namespace IClientRemoteStorage
 	{
-		extern Pattern_t PipeLoop;
+		extern Pattern_t RunIPCFrame;
 	}
 
 	namespace IClientUser
 	{
-		extern Pattern_t PipeLoop;
+		extern Pattern_t RunIPCFrame;
 
 		extern Pattern_t BIsSubscribedApp;
 		extern Pattern_t BLoggedOn;
@@ -93,17 +93,17 @@ namespace Patterns
 
 	namespace IClientUGC
 	{
-		extern Pattern_t PipeLoop;
+		extern Pattern_t RunIPCFrame;
 	}
 
 	namespace IClientUserStats
 	{
-		extern Pattern_t PipeLoop;
+		extern Pattern_t RunIPCFrame;
 	}
 
 	namespace IClientUtils
 	{
-		extern Pattern_t PipeLoop;
+		extern Pattern_t RunIPCFrame;
 		extern Pattern_t Offset_GetPipeIndex;
 	}
 

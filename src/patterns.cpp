@@ -65,9 +65,9 @@ namespace Patterns
 		std::vector<uint8_t> { 0x56, 0x57, 0xe5, 0x89, 0x55 }
 	};
 
-	Pattern_t LogSteamPipeCall
+	Pattern_t TraceIPC
 	{
-		"LogSteamPipeCall",
+		"TraceIPC",
 		"E8 ? ? ? ? 83 C4 10 85 FF 74 ? 8B 07 83 EC 04 FF B5 ? ? ? ? FF B5 ? ? ? ? 57 FF 10 83 C4 10 8D 45 ? 83 EC 04 89 F3 6A 04 50 FF 75",
 		SigFollowMode::Relative
 	};
@@ -158,9 +158,9 @@ namespace Patterns
 
 	namespace IClientAppManager
 	{
-		Pattern_t PipeLoop
+		Pattern_t RunIPCFrame
 		{
-			"IClientAppManager::PipeLoop",
+			"IClientAppManager::RunIPCFrame",
 			"FF B5 ? ? ? ? 50 8D 86 ? ? ? ? 68 90 09 00 00",
 			SigFollowMode::PrologueUpwards,
 			std::vector<uint8_t> { 0x56, 0x57, 0xe5, 0x89, 0x55 }
@@ -176,9 +176,9 @@ namespace Patterns
 
 	namespace IClientApps
 	{
-		Pattern_t PipeLoop
+		Pattern_t RunIPCFrame
 		{
-			"IClientApps::PipeLoop",
+			"IClientApps::RunIPCFrame",
 			"E8 ? ? ? ? 8B 85 ? ? ? ? 83 C4 10 3D 39 9C 88 A6",
 			SigFollowMode::PrologueUpwards,
 			std::vector<uint8_t> { 0x56, 0x57, 0xe5, 0x89, 0x55 }
@@ -187,9 +187,9 @@ namespace Patterns
 
 	namespace IClientRemoteStorage
 	{
-		Pattern_t PipeLoop
+		Pattern_t RunIPCFrame
 		{
-			"IClientRemoteStorage::PipeLoop",
+			"IClientRemoteStorage::RunIPCFrame",
 			"E8 ? ? ? ? 8B 85 ? ? ? ? 83 C4 10 3D 73 E8 2F 87",
 			SigFollowMode::PrologueUpwards,
 			std::vector<uint8_t> { 0x56, 0x57, 0xe5, 0x89, 0x55 }
@@ -198,9 +198,9 @@ namespace Patterns
 
 	namespace IClientUser
 	{
-		Pattern_t PipeLoop
+		Pattern_t RunIPCFrame
 		{
-			"IClientUser::PipeLoop",
+			"IClientUser::RunIPCFrame",
 			"E8 ? ? ? ? 8B 85 ? ? ? ? 83 C4 10 3D 10 A3 86 73",
 			SigFollowMode::PrologueUpwards,
 			std::vector<uint8_t> { 0x56, 0x57, 0xe5, 0x89, 0x55 }
@@ -256,9 +256,9 @@ namespace Patterns
 
 	namespace IClientUGC
 	{
-		Pattern_t PipeLoop
+		Pattern_t RunIPCFrame
 		{
-			"IClientUGC::PipeLoop",
+			"IClientUGC::RunIPCFrame",
 			"E8 ? ? ? ? 8B 85 ? ? ? ? 83 C4 10 3D 14 0C D2 71",
 			SigFollowMode::PrologueUpwards,
 			std::vector<uint8_t> { 0x56, 0x57, 0xe5, 0x89, 0x55 }
@@ -267,9 +267,9 @@ namespace Patterns
 
 	namespace IClientUserStats
 	{
-		Pattern_t PipeLoop
+		Pattern_t RunIPCFrame
 		{
-			"IClientUserStats::PipeLoop",
+			"IClientUserStats::RunIPCFrame",
 			"E8 ? ? ? ? 8B 85 ? ? ? ? 83 C4 10 3D 94 65 6D 87",
 			SigFollowMode::PrologueUpwards,
 			std::vector<uint8_t> { 0x56, 0x57, 0xe5, 0x89, 0x55 }
@@ -278,9 +278,9 @@ namespace Patterns
 
 	namespace IClientUtils
 	{
-		Pattern_t PipeLoop
+		Pattern_t RunIPCFrame
 		{
-			"IClientUtils::PipeLoop",
+			"IClientUtils::RunIPCFrame",
 			"83 EC 08 89 F3 50 57 E8 ? ? ? ? 58 FF B5 ? ? ? ? E8 ? ? ? ? 58 8D 45",
 			SigFollowMode::PrologueUpwards,
 			std::vector<uint8_t> { 0x56, 0x57, 0xe5, 0x89, 0x55 }

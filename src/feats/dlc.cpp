@@ -22,7 +22,7 @@ bool DLC::shouldUnlockDlc(uint32_t appId)
 		return false;
 	}
 
-	if (g_pSteamEngine->getUser(0)->checkAppOwnership(appId))
+	if (g_pSteamEngine->getUser(0)->isSubscribed(appId))
 	{
 		return false;
 	}

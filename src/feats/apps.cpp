@@ -133,18 +133,18 @@ void Apps::getSubscribedApps(uint32_t* appList, size_t size, uint32_t& count)
 
 bool Apps::shouldDisableCloud(uint32_t appId)
 {
-	return !g_pSteamEngine->getUser(0)->checkAppOwnership(appId);
+	return !g_pSteamEngine->getUser(0)->isSubscribed(appId);
 }
 
 bool Apps::shouldDisableCDKey(uint32_t appId)
 {
-	return !g_pSteamEngine->getUser(0)->checkAppOwnership(appId);
+	return !g_pSteamEngine->getUser(0)->isSubscribed(appId);
 }
 
 bool Apps::shouldDisableUpdates(uint32_t appId)
 {
 	//Using AdditionalApps here aswell so users can manually block updates
-	return g_config.isAddedAppId(appId) || !g_pSteamEngine->getUser(0)->checkAppOwnership(appId);
+	return g_config.isAddedAppId(appId) || !g_pSteamEngine->getUser(0)->isSubscribed(appId);
 }
 
 void Apps::sendGamesPlayed(CMsgClientGamesPlayed* msg)
@@ -161,7 +161,7 @@ void Apps::sendGamesPlayed(CMsgClientGamesPlayed* msg)
 			continue;
 		}
 
-		if(!owned && g_pSteamEngine->getUser(0)->checkAppOwnership(game.game_id()))
+		if(!owned && g_pSteamEngine->getUser(0)->isSubscribed(game.game_id()))
 		{
 			owned = true;
 		}
