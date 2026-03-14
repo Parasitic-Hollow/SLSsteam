@@ -45,8 +45,9 @@ lm_address_t MemHlp::patternScan(const char* pattern, lm_module_t module)
 	//Totally unnecessary right now, and might always be
 	
 	static auto codeSections = std::map<lm_address_t, lm_address_t>();
+	codeSections.clear();
 
-	const static auto lambda = [](lm_segment_t* seg, lm_void_t* arg) -> lm_bool_t
+	const static auto enumSections = [](lm_segment_t* seg, lm_void_t* arg) -> lm_bool_t
 	{
 		if(seg->prot & LM_PROT_R)
 		{
@@ -57,10 +58,19 @@ lm_address_t MemHlp::patternScan(const char* pattern, lm_module_t module)
 		return LM_TRUE;
 	};
 
-	LM_EnumSegments(lambda, nullptr);
+	LM_EnumSegments(enumSections, nullptr);
 
 	for(const auto& itm : codeSections)
 	{
+		if (module.base > itm.second)
+		{
+			continue;
+		}
+		if (module.base + module.size < itm.first)
+		{
+			continue;
+		}
+
 		for (lm_address_t cur = itm.first; cur < itm.second; cur++)
 		{
 			bool found = true;
